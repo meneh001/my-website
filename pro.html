@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abu Meneh Dumbuya | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #0d0d1a;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Particles Background */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Intro Overlay */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f39c12;
+      font-size: 2.1rem;
+      font-weight: bold;
+      background: #0d0d1a;
+      z-index: 999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #intro-overlay.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Navbar */
+    nav {
+      justify-content: space-evenly;
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      background: rgba(30, 30, 47, 0.95);
+      padding: 12px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-item {
+      float: center;
+      justify-content: space-evenly;
+      display: inline-block;
+      padding: 12px 25px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      border-radius: 10px;
+      transition: all 0.3s;
+      text-align: center;
+      margin: 0 5px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(243, 156, 18, 0.5);
+    }
+
+    /* Sections */
+    section {
+      display: none;
+      margin: 30px auto;
+      padding: 50px 30px;
+      min-height: 80vh;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      transition: all 0.6s ease-in-out;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    section.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #f39c12, #f1c40f, #f39c12);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 3s ease infinite alternate;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0%;
+      }
+
+      100% {
+        background-position: 200%;
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #ddd;
+    }
+
+    /* Cards */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 15px;
+      width: 250px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(243, 156, 18, 0.6);
+    }
+
+
+    /* Buttons */
+    a.button {
+      display: inline-block;
+      padding: 12px 25px;
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s, box-shadow 0.3s;
+    }
+
+    a.button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(243, 156, 18, 0.7);
+    }
+
+    /* Skills Bars */
+    .skill-bar {
+      margin-bottom: 20px;
+    }
+
+    .skill-bar .title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .skill-bar .bar {
+      height: 15px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .skill-bar .bar-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      border-radius: 10px;
+      transition: width 1s;
+    }
+
+    /* Back-to-top Button */
+    #topBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 15px 18px;
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 6px 20px rgba(243, 156, 18, 0.7);
+      transition: all 0.3s;
+    }
+
+    #topBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(243, 156, 18, 0.8);
+    }
+
+    /* Floating Socials */
+    .socials {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+    }
+
+    #contact {
+      text-align: center;
+      width: 100%;
+    }
+
+    #contact-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    #contact-card {
+      margin-top: 60px;
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #contact-card:hover {
+      box-shadow: 0 6px 25px rgba(243, 156, 18, 0.7);
+      transform: translate(30px);
+    }
+
+
+    #social-media {
+      margin-top: 20px;
+      text-align: center;
+      margin-bottom: 100px;
+      margin-top: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+
+    }
+
+    #social-media a {
+      width: 150px;
+      font-size: 40px;
+
+      margin: 0 10px;
+      color: white;
+    }
+
+    #social-media a:hover {
+      box-shadow: 0 6px 25px rgba(243, 156, 18, 0.7);
+      font-size: 50px;
+      transform: translate(25px);
+      transition: 0.6s;
+
+      color: white;
+    }
+
+    #social-media a:active {
+      transform: scale(1.1);
+      transition: 0.4s;
+    }
+
+    .socials a {
+      padding: 10px 15px;
+      margin: 5px 0;
+      background: #1e1e2f;
+      color: #fff;
+      border-radius: 0 8px 8px 0;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .socials a:hover {
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      transform: translateX(-5px);
+    }
+
+    .skill {
+      border-radius: 100px;
+      width: 350px;
+      height: 8px;
+      background-color: red;
+      animation: skill1 2s infinite;
+
+    }
+
+    @keyframes skill1 {
+      0% {
+        background-color: #0d0d1a;
+        animation-delay: 0.3s;
+        width: 15px;
+      }
+
+      40% {
+        animation-delay: 0.5s;
+        background-color: #f39c12;
+        width: 200px;
+      }
+
+      80% {
+        animation-delay: 0.6s;
+        background-color: #f1c40f;
+        width: 300px;
+      }
+
+      100% {
+        animation-delay: 1s;
+        width: 350px;
+        background-color: #0d0d1a;
+      }
+
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      section {
+        padding: 30px 20px;
+      }
+
+      .card {
+        width: 80%;
+      }
+
+      img {
+        width: 100px;
+        height: 200px;
+        border-radius: 50px;
+      }
+    }
+
+    @media(max-width:480px) {
+      section {
+        padding: 20px 15px;
+      }
+
+      .card {
+        width: 100%;
+      }
+
+      img {
+        width: 100px;
+        height: 200px;
+        border-radius: 50px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Particles -->
+  <div id="particles-js"></div>
+
+  <!-- Intro Overlay -->
+  <div id="intro-overlay"><img src="A.jpg" alt="" style="border-radius: 50px; width: 300px; height: 400px;"> <br>
+    <br><br>
+    <h3>Please wait as we load the contents for you......</h3>
+  </div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-item active" onclick="showSection('home')"><i class="fas fa-home"></i> Home</div>
+    <div class="nav-item" onclick="showSection('about')"><i class="fas fa-user"></i> About</div>
+    <div class="nav-item" onclick="showSection('projects')"><i class="fas fa-code"></i> Projects</div>
+    <div class="nav-item" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Achievements</div>
+    <div class="nav-item" onclick="showSection('skills')"><i class="fas fa-lightbulb"></i> Skills</div>
+    <div class="nav-item" onclick="showSection('contact')"><i class="fas fa-envelope"></i> Contact</div>
+  </nav>
+
+  <!-- Sections -->
+  <section id="home" class="show">
+    <h1>Welcome to My Premium Portfolio</h1>
+    <p>Hi! I'm Abu Meneh Dumbuya, an IT developer specializing in modern web apps, e-commerce, and creative solutions.
+      I'm a creative and driven developer who loves turning ideas into clean, functional designs. With a focus on
+      simplicity and performance, I build digital experiences that feel intuitive and look great across all devices.
+      Explore my achievements and projects below.</p>
+    <a href="#projects" class="button" onclick="showSection('projects')">View Projects</a>
+  </section>
+
+  <section id="about">
+    <h1>About Me</h1>
+    <p>I design and develop interactive, responsive websites and applications. My focus is on delivering high-quality
+      user experiences with clean code and modern design principles.</p>
+    <p>I'm a passionate and detail-oriented developer with a strong love for turning ideas into interactive digital
+      experiences. Whether I'm building sleek user interfaces or solving complex backend challenges, I thrive on
+      creating solutions that are both elegant and efficient. My journey into tech
+      began with curiosity and quickly evolved into a full-fledged
+      commitment to mastering the craft. I believe in continuous learning, and I'm always exploring new tools
+      and technologies to stay ahead in this ever-evolving field.</p>
+    <p>With a solid foundation in HTML, CSS, JavaScript, and modern frameworks, I bring both creativity and technical
+      precision to every project I touch. I value clean code, thoughtful design, and collaborative problem-solving.
+      Whether working solo or as part of a team, I aim to deliver work that not only meets expectations but exceeds
+      them. My goal is to build digital products that are intuitive, accessible, and impactful, because great
+      technology should feel effortless to use.</p>
+  </section>
+
+  <section id="projects">
+    <h1>Projects</h1>
+    <div class="card-container">
+      <div class="card" onclick="window.open('https://example.com/','_blank')">
+        <h3>E-commerce Shop Mini</h3>
+        <p>HTML, CSS, JS. Includes product listing, shopping cart, checkout, and responsive UI.</p>
+      </div>
+      <div class="card" onclick="window.open('https://example.com/project2','_blank')">
+        <h3>Inventory Management</h3>
+        <p>React & Firebase app wiewth real-time product tracking and analytics dashboard.</p>
+      </div>
+      <div class="card" onclick="window.open('https://example.com/project3','_blank')">
+        <h3>Checkout System</h3>
+        <p>Node.js & JS mini project simulating online payment workflow with validation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <h1>Achievements & Certificates</h1>
+    <div class="skill">
+      <br>
+      <p>Coming soon...</p>
+    </div>
+    <!-- <div class="card-container">
+      <div class="card" onclick="window.open('https://example.com/certificate1','_blank')">
+        <h3>Web Dev Certificate</h3>
+        <p>Completed an advanced course covering HTML, CSS, JS, and React.</p>
+      </div>
+      <div class="card" onclick="window.open('https://example.com/hackathon','_blank')">
+        <h3>Hackathon Winner</h3>
+        <p>Top project in university hackathon for e-commerce solution innovation.</p>
+      </div>
+    </div> -->
+  </section>
+
+  <section id="skills">
+    <h1>Skills</h1>
+    <div class="skill-bar">
+      <div class="title">HTML & CSS</div>
+      <div class="bar">
+        <div class="bar-fill" style="width:90%"></div>
+      </div>
+    </div>
+    <div class="skill-bar">
+      <div class="title">JavaScript</div>
+      <div class="bar">
+        <div class="bar-fill" style="width:40%"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="contact">
+    <h1>Contact Me</h1>
+    <p>Reach me via email or social media:</p>
+    <ul>
+      <div id="contact-card">
+        Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abumenehdumbuya24434@gmail.com" target="_blank"
+          rel="noopener noreferrer">abumenehdumbuya24434@gmail.com</a>
+      </div>
+      <div id="contact-card">
+        Phone: <a href="tel:+23278037360">+23278037360</a>
+      </div>
+      <div id="contact-card">
+        Location: <span id="location">Freetown, Sierra Leone</span>
+      </div>
+
+      <div id="social-media">
+        <a href="https://github.com/meneh001" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.facebook.com/abumeneh.dumbuya.1" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://wa.me/23278037360" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://x.com/heismeneh" target="_blank"><i class="fab fa-x"></i></a>
+        <a href="https://www.instagram.com/heismeneh/" target="_blank"><i class="fab fa-instagram"></i></a>
+
+
+    </ul>
+  </section>
+
+  <!-- Floating Socials -->
+  <div class="socials">
+    <a href="https://github.com/meneh001" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://wa.me/23278037360"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/heismeneh/" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="abumenehdumbuya24434@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+  </div>
+
+  <!-- Back to Top -->
+  <button id="topBtn" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    const nameText = "Abu Meneh Dumbuya";
+
+    // Initialize particles
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 50 },
+        color: { value: "#f39c12" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#f39c12",
+          opacity: 0.4,
+          width: 2
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      }
+    });
+
+    // Start typing after 2 seconds
+    setTimeout(() => {
+      typeName();
+    }, 5000);
+
+    function typeName() {
+      const introOverlay = document.getElementById('intro-overlay');
+      introOverlay.innerHTML = "";
+      const span = document.createElement("span");
+      introOverlay.appendChild(span);
+
+      let i = 0;
+      const typingSpeed = 5000 / nameText.length;
+
+      const typingInterval = setInterval(() => {
+        span.textContent += nameText.charAt(i);
+        i++;
+        if (i >= nameText.length) {
+          clearInterval(typingInterval);
+          setTimeout(() => {
+            introOverlay.classList.add('hide');
+            showSection('home');
+          }, 500);
+        }
+      }, typingSpeed);
+    }
+
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(sec => {
+        sec.classList.remove("show");
+      });
+      document.getElementById(id).classList.add("show");
+
+      document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.remove("active");
+      });
+      document.querySelector(`.nav-item[onclick*="${id}"]`)?.classList.add("active");
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onscroll = function () {
+      document.getElementById("topBtn").style.display =
+        window.scrollY > 300 ? "block" : "none";
+    };
+  </script>
+</body>
+
+</html>
